@@ -13,8 +13,8 @@ npx skills add bhargavtibadiya/agent-skills
 Or install a specific skill:
 
 ```bash
-npx skills add bhargavtibadiya/agent-skills/commit
-npx skills add bhargavtibadiya/agent-skills/coding-guidelines
+npx skills add bhargavtibadiya/agent-skills --skills commit
+npx skills add bhargavtibadiya/agent-skills --skills coding-guidelines
 ```
 
 ## Skills
