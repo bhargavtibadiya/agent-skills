@@ -14,6 +14,7 @@ Or install a specific skill:
 
 ```bash
 npx skills add bhargavtibadiya/agent-skills/commit
+npx skills add bhargavtibadiya/agent-skills/coding-guidelines
 ```
 
 ## Skills
@@ -21,15 +22,17 @@ npx skills add bhargavtibadiya/agent-skills/commit
 | Skill | Description |
 |-------|-------------|
 | [`commit`](skills/commit/SKILL.md) | Generate and run conventional commits with strict staging rules and AI co-author trailers |
+| [`coding-guidelines`](skills/coding-guidelines/SKILL.md) | Enforce 15 mandatory backend TypeScript/Node.js rules — Cloudinary storage, soft deletes, Swagger sync, route ordering, strict typing, error handling, and more |
 
 ## Structure
 
-Each skill lives in `skills/<name>/SKILL.md` and contains agent instructions.
+Each skill lives in `skills/<name>/SKILL.md`. Complex skills use a `references/` folder for detailed documentation loaded on demand.
 
 ```
 skills/
 └── <skill-name>/
-    └── SKILL.md
+    ├── SKILL.md          # Entry point: metadata + instructions
+    └── references/       # Optional: detailed docs loaded on demand
 ```
 
 ## Credits
