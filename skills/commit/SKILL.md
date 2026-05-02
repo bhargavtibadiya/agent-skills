@@ -1,5 +1,5 @@
 ---
-   sname: commit
+name: commit
 description: Use this skill when the user asks to commit changes, generate a commit message, or run a git commit. Follows conventional commit format with strict staging rules and mandatory co-author trailers for AI coding agents.
 ---
 
