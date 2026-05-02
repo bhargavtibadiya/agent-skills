@@ -1,0 +1,34 @@
+{
+  "name": "agent-skills",
+  "version": "1.0.0",
+  "description": "A collection of reusable AI agent skills for coding workflows — commits, design, and more.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "agent-skills",
+    "ai-agent",
+    "claude-code",
+    "cursor",
+    "codex",
+    "skills",
+    "developer-tools",
+    "conventional-commits",
+    "coding-agent"
+  ],
+  "author": {
+    "name": "Bhargav Tibadiya",
+    "url": "https://github.com/bhargavtibadiya"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bhargavtibadiya/agent-skills.git"
+  },
+  "homepage": "https://github.com/bhargavtibadiya/agent-skills#readme",
+  "bugs": {
+    "url": "https://github.com/bhargavtibadiya/agent-skills/issues"
+  }
+}
