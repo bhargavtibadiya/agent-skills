@@ -162,9 +162,9 @@ Some agents expose their model name. Use the exact model name if known.
 
 | Model known? | Co-Author Trailer |
 |---|---|
-| DeepSeek V4 Pro | `Co-Authored-By: DeepSeek V4 Pro <service@deepseek.com>` |
-| DeepSeek V4 Flash | `Co-Authored-By: DeepSeek V4 Flash <service@deepseek.com>` |
-| **Unknown / not sure → fallback** | `Co-Authored-By: DeepSeek AI <service@deepseek.com>` |
+| DeepSeek V4 Pro | `Co-Authored-By: DeepSeek V4 Pro <deepseek@deepseek.com>` |
+| DeepSeek V4 Flash | `Co-Authored-By: DeepSeek V4 Flash <deepseek@deepseek.com>` |
+| **Unknown / not sure → fallback** | `Co-Authored-By: DeepSeek AI <deepseek@deepseek.com>` |
 
 > Default fallback for any DeepSeek involvement where model is unclear: **DeepSeek AI**
 
