@@ -1,19 +1,37 @@
 ---
-name: agent-context-handoff
+name: ai-context-handoff
 description: >
   Use this skill when the user wants to capture, document, and transfer the current chat session's
   full context to a new AI session. Triggers include: "handoff", "context dump", "save context",
   "switching to new chat", "AI is losing context", "document this session", "create a handoff",
   "context export", "session summary for new AI", or any variation of wanting to preserve
   conversation state before starting fresh. The output is a structured Markdown document
-  saved to docs/agent-context-handoff/<Month YYYY>/<timestamp>-<slug>.md that a new AI can
+  saved to docs/ai-context-handoff/<Month YYYY>/<timestamp>-<slug>.md that a new AI can
   ingest as its first message to resume work with zero ambiguity.
 ---
 
-# Agent Context Handoff Skill
+# AI Context Handoff Skill
 
 > **Role:** Senior AI Memory Architect  
 > **Purpose:** Capture everything a new AI instance needs to resume work as if it were present from the beginning. No detail is too small. No section is mandatory — empty sections are valid and should remain as stubs to signal they were considered.
+
+---
+
+## What Is This?
+
+AI conversations have a memory limit. After enough back-and-forth, the AI starts forgetting earlier details — the decisions made, the files touched, the things that didn't work, and the things that did. When that happens, or when you simply need to start a fresh chat, you lose all of that accumulated context. You'd have to re-explain everything from scratch, and the new AI would have no idea where you left off.
+
+This skill solves that problem. It creates a structured handoff document — a Markdown file — that captures everything important from the current session in one organised place. Think of it as writing a detailed briefing note for a colleague who is joining mid-project. When the new AI reads it, it knows exactly what was happening, what decisions were made and why, what failed, what's next, and how you like to work.
+
+## How the Handoff Works
+
+The process has two parts. First, at the end of a session (or whenever context is getting long), you ask the AI to create a handoff. It reads through the entire conversation and writes a structured document covering the active task, completed work, key decisions, blockers, files involved, and more. That document gets saved as a Markdown file inside `docs/ai-context-handoff/` in your project, organised by month.
+
+Second, when you start a new chat, you open the handoff file, attach it, and paste the Continuation Prompt from the bottom of that file as your first message. The new AI reads everything in the file, confirms what it understands, and picks up exactly where the last session ended — no re-explaining, no starting over.
+
+## What Gets Captured
+
+A handoff document is not a chat transcript. It is a distilled, organised record of the things that actually matter for the next session. That includes the current task and exactly what to do next, a prioritised queue of remaining work, key decisions and the reasoning behind them, dead ends to avoid repeating, unresolved blockers and open questions, files and assets that are in play, technical details like commands and environment variables, and a note on how you prefer to communicate. Sections that don't apply to a session are left as empty stubs rather than deleted — this tells the new AI they were considered and found empty, not overlooked.
 
 ---
 
@@ -90,7 +108,7 @@ The last thing in the handoff doc (and optionally repeated in chat) is a ready-t
 **Step 7 — Tell the user the file path and confirm.**  
 Example:
 ```
-Handoff saved → docs/agent-context-handoff/May 2026/2026-05-31T1430-learner-hub-auth.md
+Handoff saved → docs/ai-context-handoff/May 2026/2026-05-31T1430-learner-hub-auth.md
 
 Copy the Continuation Prompt at the bottom of the file and paste it as your first message in the new chat.
 ```
@@ -105,7 +123,7 @@ All handoff files live under:
 
 ```
 docs/
-└── agent-context-handoff/
+└── ai-context-handoff/
     ├── May 2025/
     │   ├── 2025-05-14T0930-auth-refactor.md
     │   └── 2025-05-28T1615-dashboard-bugfix.md
@@ -158,7 +176,7 @@ YYYY-MM-DDTHHMM-<slug>.md
 When saving:
 
 ```bash
-mkdir -p "docs/agent-context-handoff/May 2026"
+mkdir -p "docs/ai-context-handoff/May 2026"
 ```
 
 If `docs/` does not exist at the project root, create it. If no clear project root exists, use the user's home or working directory as the anchor and document the path in the handoff.
@@ -486,8 +504,8 @@ What files, designs, or assets are relevant and where they live.
 
 | File | Location | Purpose |
 |---|---|---|
-| This handoff | `docs/agent-context-handoff/May 2026/...` | Context transfer |
-| Previous handoff | `docs/agent-context-handoff/May 2026/2026-05-28T...` | Prior session |
+| This handoff | `docs/ai-context-handoff/May 2026/...` | Context transfer |
+| Previous handoff | `docs/ai-context-handoff/May 2026/2026-05-28T...` | Prior session |
 | CLAUDE.md | Repo root | AI agent instructions for this project |
 
 ### Assets
@@ -899,7 +917,7 @@ _Or: N/A_
 
 | File | Location | Purpose |
 |---|---|---|
-| This handoff | `docs/agent-context-handoff/<Month YYYY>/<filename>.md` | Context transfer |
+| This handoff | `docs/ai-context-handoff/<Month YYYY>/<filename>.md` | Context transfer |
 | Previous handoff | <path or "none"> | Prior session |
 
 ### Assets
@@ -966,25 +984,20 @@ _Or: No external references._
 
 ## Continuation Prompt
 
-> Copy everything inside the code block below and paste it as your **first message** in a new chat.
+> Copy everything inside the code block below and paste it as your **first message** in a new chat. Attach the handoff `.md` file to that message — you do not need to paste its contents inline, the file itself is the context.
 
 ```
-I'm continuing a development session from a previous chat. Below is the full AI context handoff document for that session. Please read it completely before responding, then confirm what you understand and state the next action you will take.
+I'm continuing a development session from a previous chat. I have attached the full AI context handoff document for that session as a file. Please read it completely before responding, then confirm what you understand and state the next action you will take.
 
----
-
-[PASTE THE FULL CONTENT OF THIS HANDOFF DOCUMENT HERE]
-
----
-
-Handoff file: docs/agent-context-handoff/<Month YYYY>/<filename>.md
+Handoff file: docs/ai-context-handoff/<Month YYYY>/<filename>.md
 
 Please:
-1. Confirm you have read and understood the handoff
-2. State the active task and the next action you will take
+1. Read the attached handoff file in full before replying
+2. Confirm you have understood the handoff — state the active task and the next action you will take
 3. Flag any blockers or clarifications needed before proceeding
 4. Begin — do not wait for further instruction unless a blocker requires it
-```
+
+<!-- Add any additional context for this new session below this line, if needed -->
 ```
 
 ---
@@ -1046,17 +1059,17 @@ pm2 logs learner-hub --lines 50
 ## Continuation Prompt
 
 ```
-Continuing an emergency debugging session. The task is applying a pending Prisma migration on a production Ubuntu VPS for a Next.js + Prisma project called LernenHub.
+Continuing an emergency debugging session. I have attached the full handoff file — please read it before responding.
 
-Migration: `prisma/migrations/20260531_add_user_roles/`
-Status on prod: pending (confirmed via `prisma migrate status`)
+Handoff file: docs/ai-context-handoff/May 2026/2026-05-31T1645-prisma-migration-fix.md
 
-CRITICAL: Use `prisma migrate deploy` only — never `prisma migrate dev` on prod.
+Please:
+1. Read the attached handoff file in full before replying
+2. Confirm you have understood — state the active task and next action
+3. Flag any blockers before proceeding
+4. Begin immediately
 
-Next step: SSH into server, run migration, restart PM2, tail logs.
-Server: Ubuntu 24.04 / PM2 + nginx / App at `/var/www/lernen-hub`
-
-Please help me execute this now.
+<!-- Add any extra context for this session here if needed -->
 ```
 ```
 
@@ -1122,7 +1135,7 @@ When work spans multiple sessions, handoffs form a chain. Each file references t
 ### Chain structure
 
 ```
-docs/agent-context-handoff/
+docs/ai-context-handoff/
 ├── May 2026/
 │   ├── 2026-05-10T0900-auth-setup.md            ← chain start (previous_handoff: null)
 │   ├── 2026-05-15T1400-auth-token-refresh.md    ← previous_handoff: auth-setup
@@ -1133,7 +1146,7 @@ docs/agent-context-handoff/
 ### YAML header in chained files
 
 ```yaml
-previous_handoff: docs/agent-context-handoff/May 2026/2026-05-22T1100-auth-rbac.md
+previous_handoff: docs/ai-context-handoff/May 2026/2026-05-22T1100-auth-rbac.md
 next_handoff: null  # update this after next session's handoff is created
 ```
 
@@ -1142,7 +1155,7 @@ next_handoff: null  # update this after next session's handoff is created
 Go back to the previous handoff file and update its `next_handoff` field:
 
 ```yaml
-next_handoff: docs/agent-context-handoff/May 2026/2026-05-31T1430-auth-prod-deploy.md
+next_handoff: docs/ai-context-handoff/May 2026/2026-05-31T1430-auth-prod-deploy.md
 ```
 
 ### Chain reading instructions for new AI
@@ -1151,7 +1164,7 @@ In the Continuation Prompt, if a chain exists, add:
 
 ```
 This is handoff #4 in a chain. Prior handoffs are available at:
-- docs/agent-context-handoff/May 2026/2026-05-22T1100-auth-rbac.md (most recent prior)
+- docs/ai-context-handoff/May 2026/2026-05-22T1100-auth-rbac.md (most recent prior)
 
 You do NOT need to read earlier handoffs unless I ask. Start with this document only.
 ```
@@ -1190,22 +1203,22 @@ Before saving a handoff, verify each item:
 
 - [ ] Filename follows `YYYY-MM-DDTHHMM-<slug>.md` exactly
 - [ ] Slug is descriptive (2–5 meaningful words, no stopwords)
-- [ ] Saved to `docs/agent-context-handoff/<Month YYYY>/` with correct month spelling
+- [ ] Saved to `docs/ai-context-handoff/<Month YYYY>/` with correct month spelling
 - [ ] Directory created with `mkdir -p` if it didn't exist
 - [ ] Previous handoff's `next_handoff` field updated (if continuing a chain)
 
 ### Continuation Prompt
 
 - [ ] Prompt is inside a fenced code block (user can copy without selecting surrounding text)
-- [ ] Prompt instructs the new AI to read the handoff before responding
-- [ ] Prompt references the file path
-- [ ] Prompt includes the 4-step instruction set (confirm, state, flag, begin)
-- [ ] Prompt is self-contained — works if copy-pasted with the handoff content into a blank new chat
+- [ ] Prompt instructs the new AI to read the attached file before responding
+- [ ] Prompt references the exact file path
+- [ ] Prompt includes the 4-step instruction set (read, confirm, flag, begin)
+- [ ] Prompt does NOT include a "paste content here" placeholder — the file is attached, not inlined
+- [ ] A comment line at the bottom of the prompt invites the user to add extra context if needed
 - [ ] Prompt does not assume the new AI knows anything from the current session
 
 ---
 
 *Skill version: 1.0*
-*Skill name: agent-context-handoff*
+*Skill name: ai-context-handoff*
 *Designed for: Claude Code, claude.ai, and any AI coding environment where context continuity matters across sessions.*
-*Created by: Bhargav Tibadiya*
