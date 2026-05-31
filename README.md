@@ -15,6 +15,7 @@ Or install a specific skill:
 ```bash
 npx skills add bhargavtibadiya/agent-skills --skill commit
 npx skills add bhargavtibadiya/agent-skills --skill coding-guidelines
+npx skills add bhargavtibadiya/agent-skills --skill agent-context-handoff
 ```
 
 ## Skills
@@ -23,6 +24,7 @@ npx skills add bhargavtibadiya/agent-skills --skill coding-guidelines
 |-------|-------------|
 | [`commit`](skills/commit/SKILL.md) | Generate and run conventional commits with strict staging rules and AI co-author trailers |
 | [`coding-guidelines`](skills/coding-guidelines/SKILL.md) | Enforce 15 mandatory backend TypeScript/Node.js rules — Cloudinary storage, soft deletes, Swagger sync, route ordering, strict typing, error handling, and more |
+| [`agent-context-handoff`](skills/agent-context-handoff/SKILL.md) | Capture and transfer your full chat session context to a new AI — preserving task state, decisions, blockers, and code changes as a structured handoff document |
 
 ## Structure
 
